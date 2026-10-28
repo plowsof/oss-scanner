@@ -152,7 +152,8 @@ Easy to get wrong in consensus code:
 
 - Pool policy is not consensus. The minimum fee, `MAX_TX_EXTRA_SIZE` and the unlock-time rule are checked
   in `tx_memory_pool::add_tx` for relay only; transactions in blocks skip them. Applying a relay rule to
-  blocks is a hard fork. The pool also feeds `fill_block_template`, so if the pool keeps a transaction
+  blocks is a consensus change (a soft fork, since it only tightens the rules) and needs a network
+  upgrade; it is not a local fix. The pool also feeds `fill_block_template`, so if the pool keeps a transaction
   that consensus rejects, default miners build invalid blocks.
 - Alt-chain blocks are stored and only fully validated when a reorg applies them, and the alt-chain paths
   (difficulty, RandomX seed) have diverged from the main-chain ones before.
@@ -297,6 +298,6 @@ report which ones you checked.
   is already fixed.
 - Patches should be minimal, target `master`, ideally follow `docs/CONTRIBUTING.md`, and where practical add or
   extend a test that fails before the fix and passes after it. Flag any consensus-rule change as needing
-  a network upgrade (hard fork).
+  a network upgrade (hard or soft fork).
 - Findings are private. Don't suggest public issues, pull requests or commit messages that reveal that a
   fix is security-related. Disclosure is up to the Monero maintainers.
