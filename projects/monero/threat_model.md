@@ -164,15 +164,15 @@ Easy to get wrong in consensus code:
   builds, although every release target is 64-bit. Cuprate, a second node implementation, follows the
   same rules, so a monerod quirk can split the network.
 - Key images are compared as bytes. That only works because point and scalar decoding reject
-  non-canonical encodings, so any new decoder (Rust, `mx25519`) has to accept and reject exactly the same
-  inputs.
+  non-canonical encodings, so any new Ed25519 point or scalar decoder (for example in the FCMP++ Rust
+  code) has to accept and reject exactly the same inputs.
 
 Lower priority but still in scope:
 
 - `src/blockchain_utilities` and other command-line tools, mostly run by the operator on local files.
 - `src/blockchain_db` corruption paths that need an attacker-produced database.
 - Bundled third-party code under `external/` (RandomX, LMDB in `db_drivers`, easylogging++, supercop,
-  rapidjson, mx25519, polyseed, utf8proc, qrcodegen) and the Rust crates from monero-oxide and crates.io
+  rapidjson, polyseed, utf8proc, qrcodegen) and the Rust crates from monero-oxide and crates.io
   are in scope only when Monero reaches the bug with attacker-controlled data. polyseed and utf8proc see
   wallet seeds and user-supplied strings. Name the upstream owner when proposing a fix.
 
