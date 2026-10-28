@@ -211,7 +211,8 @@ Out of scope:
   - `performance_tests`.
 - Only `unit_tests` ran during the image build, with the filter Monero's CI uses
   (`-DNSResolver.*:AddressFromURL.*:select_outputs.*`). `DNSResolver.*` and `AddressFromURL.*` need the
-  network and fail offline.
+  network and fail offline. The output is in `/src/build/unit_tests_baseline.log`; check it to see
+  whether a failing test already failed before your change.
 - The fuzz harnesses in `tests/fuzz` aren't built. To build one, re-run CMake on `/src/build` with
   `-DENABLE_FUZZ_TEST=ON` and build its `<type>_fuzz_tests` target; the libraries already built are
   reused. Each harness reads one input file, and seed inputs are in `tests/data/fuzz/<type>`. CMake

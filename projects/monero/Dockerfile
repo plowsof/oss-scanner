@@ -43,9 +43,11 @@ RUN cmake -S /src -B /src/build \
 # The build downloaded every crate already. Keep cargo off the network from here on.
 ENV CARGO_NET_OFFLINE=true
 
-# Run the unit tests once, with the filter from Monero's CI (the DNSResolver and AddressFromURL tests need
-# the network). A failure or timeout prints a warning and doesn't fail the build.
+# Record a baseline of the unit tests, with the filter from Monero's CI (the DNSResolver and AddressFromURL
+# tests need the network). A failure or timeout doesn't fail the build; the log tells the scanner which
+# tests already fail before any change.
 RUN cd /src/build/tests/unit_tests \
     && (timeout --kill-after=5 600 ./unit_tests --data-dir=/src/tests/data \
         --gtest_filter='-DNSResolver.*:AddressFromURL.*:select_outputs.*' \
-        || echo "WARNING: unit_tests reported failures (or timed out)")
+        > /src/build/unit_tests_baseline.log 2>&1 \
+        || echo "WARNING: unit_tests reported failures (or timed out), see /src/build/unit_tests_baseline.log")
